@@ -1,4 +1,5 @@
 import requests
+from bs4 import BeautifulSoup
 
 my_url = input("Please enter the URL:   ")
 
@@ -11,6 +12,12 @@ if response.status_code != 200:
 else:
     print("Scraping...")
     print(response.text)
+    html = response.text
+    soup = BeautifulSoup(html, "html.parser")
+
+    
+
+
 
 
 
