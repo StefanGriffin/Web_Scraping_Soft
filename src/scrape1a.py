@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from collections import Counter
+from stop_words import get_stop_words
 
 
 def clean_word(word):
@@ -12,21 +13,25 @@ def clean_word(word):
     word = word.replace(".", "")
     return word
 
-
 def clean_up_words(words):
     new_words = []
+    pkg_stop_words = get_stop_words('en')
+    print(pkg_stop_words)
+    my_stop_words = ['the', 'is', 'and', 'themselves']
     for word in words:
-       clean_word = clean_word(word)
-       new_words.append(cleaned_word)
+        word = word.lower()
+        if word == 'themselves':
+            print(word)
+        if word in my_stop_words or word in pkg_stop_words:
+            pass
+        else:
+            cleaned_word = clean_word(word)
+            new_words.append(cleaned_word)
     return new_words
 
 saved_domain = {
     "tim.blog": "content-area"
 }
-
-# if "tim.blog" in saved_domain:
-#     div_class = saved_domain['tim.blog']
-#     print(div_class)
 
 my_url = input("Please enter the URL:   ")
 
@@ -55,7 +60,7 @@ else:
     # print("Number of words is", len(words))
     clean_words = clean_up_words(words)
     word_counts = Counter(clean_words)
-    print(word_counts.most_common())
+    print(word_counts.most_common(30))
 
 
 
