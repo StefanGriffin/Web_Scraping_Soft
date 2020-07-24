@@ -1,3 +1,6 @@
+import csv
+import datetime
+import os
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
@@ -28,6 +31,13 @@ def clean_up_words(words):
             cleaned_word = clean_word(word)
             new_words.append(cleaned_word)
     return new_words
+
+def create_csv_path(csv_path):
+     if not os.path.exists(csv_path):
+        with open(csv_path, 'w') as csvfile:
+            header_colums = ['word', 'count', 'timestamp']
+            writer = csv.DictWriter(csvfile, fieldnames=header_colums)
+            writer.writeheader()
 
 saved_domain = {
     "tim.blog": "content-area"
@@ -61,6 +71,14 @@ else:
     clean_words = clean_up_words(words)
     word_counts = Counter(clean_words)
     print(word_counts.most_common(30))
+    filename = domain.replace(".", "-") + '.csv'
+    path = 'csv/' + filename
+    create_csv_path(path)
+
+
+   
+
+    
 
 
 
